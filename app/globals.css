@@ -16,9 +16,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #0a0a0a;
-  color: #e5e5e5;
-  line-height: 1.6;
+  background: #000;
+  color: #fff;
+  line-height: 1.5;
 }
 
 a {
@@ -33,7 +33,7 @@ button {
 
 code,
 pre {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Berkeley Mono', 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
 }
 
 select {
