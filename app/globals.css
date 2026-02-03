@@ -16,8 +16,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #f5f5f5;
-  color: #333;
+  background: #0a0a0a;
+  color: #e5e5e5;
   line-height: 1.6;
 }
 
@@ -34,4 +34,8 @@ button {
 code,
 pre {
   font-family: 'Courier New', Courier, monospace;
+}
+
+select {
+  color-scheme: dark;
 }
