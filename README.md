@@ -24,10 +24,11 @@ npm install
 cp .env.example .env.local
 ```
 
-Edit `.env.local` and add your GitHub token:
+Edit `.env.local` and add your tokens:
 
 ```
 GITHUB_TOKEN=your_github_token_here
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
 ```
 
 3. Run the development server:
@@ -55,6 +56,7 @@ npm run dev
 ## Environment Variables
 
 - `GITHUB_TOKEN` - GitHub personal access token with repo access
+- `ANTHROPIC_API_KEY` - Anthropic API key for AI model access
 
 ## License
 

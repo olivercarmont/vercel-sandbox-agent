@@ -4,7 +4,7 @@ import { createSession, sendPrompt } from "@/lib/opencode";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { serverUrl, prompt } = body;
+    const { serverUrl, prompt, modelId } = body;
 
     if (!serverUrl || !prompt) {
       return NextResponse.json(
@@ -15,7 +15,10 @@ export async function POST(request: NextRequest) {
 
     const { sessionId } = await createSession(serverUrl, "Session");
     
-    await sendPrompt(serverUrl, sessionId, prompt);
+    await sendPrompt(serverUrl, sessionId, prompt, {
+      providerID: "anthropic",
+      modelID: modelId || "claude-opus-4-5-20251101",
+    });
 
     return NextResponse.json({ sessionId });
   } catch (error) {

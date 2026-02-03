@@ -3,6 +3,7 @@ import {
   createSandbox,
   waitForSandboxReady,
   installOpenCode,
+  configureOpenCode,
   startOpenCodeServer,
   waitForOpenCodeServer,
   getSandboxDomain,
@@ -25,6 +26,8 @@ export async function POST(request: NextRequest) {
     await waitForSandboxReady(sandboxId);
     
     await installOpenCode(sandbox);
+    
+    await configureOpenCode(sandbox);
     
     await startOpenCodeServer(sandbox);
     

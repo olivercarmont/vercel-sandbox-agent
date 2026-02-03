@@ -69,10 +69,47 @@ export async function installOpenCode(sandbox: Sandbox) {
   return { stdout, stderr };
 }
 
+export async function configureOpenCode(sandbox: Sandbox) {
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  
+  if (!apiKey) {
+    throw new Error("ANTHROPIC_API_KEY environment variable is required");
+  }
+
+  await sandbox.runCommand("mkdir", ["-p", ".opencode"]);
+
+  const config = {
+    provider: {
+      anthropic: {
+        apiKey: apiKey,
+      },
+    },
+  };
+
+  const configJson = JSON.stringify(config, null, 2);
+  const configBase64 = Buffer.from(configJson).toString("base64");
+  
+  await sandbox.runCommand("sh", [
+    "-c",
+    `echo "${configBase64}" | base64 -d > .opencode/config.json`,
+  ]);
+
+  const envContent = `ANTHROPIC_API_KEY=${apiKey}`;
+  const envBase64 = Buffer.from(envContent).toString("base64");
+  
+  await sandbox.runCommand("sh", [
+    "-c",
+    `echo "${envBase64}" | base64 -d > .env.opencode`,
+  ]);
+}
+
 export async function startOpenCodeServer(sandbox: Sandbox) {
   await sandbox.runCommand({
-    cmd: "opencode",
-    args: ["serve", "--port", String(OPENCODE_PORT), "--cors", OPENCODE_CORS],
+    cmd: "sh",
+    args: [
+      "-c",
+      `set -a && source .env.opencode && set +a && opencode serve --port ${OPENCODE_PORT} --cors "${OPENCODE_CORS}"`,
+    ],
     detached: true,
   });
 }

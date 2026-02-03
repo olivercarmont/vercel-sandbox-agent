@@ -9,9 +9,16 @@ interface LogEntry {
   timestamp: Date;
 }
 
+const MODELS = [
+  { id: "claude-opus-4-5-20251101", name: "Claude Opus 4.5" },
+  { id: "claude-sonnet-4-5-20241022", name: "Claude Sonnet 4.5" },
+  { id: "claude-3-5-sonnet-20241022", name: "Claude 3.5 Sonnet" },
+];
+
 export default function Home() {
   const [repoUrl, setRepoUrl] = useState("");
   const [prompt, setPrompt] = useState("");
+  const [modelId, setModelId] = useState(MODELS[0].id);
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const logsEndRef = useRef<HTMLDivElement>(null);
@@ -53,7 +60,7 @@ export default function Home() {
       const promptRes = await fetch("/api/sandbox/prompt", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ serverUrl, prompt }),
+        body: JSON.stringify({ serverUrl, prompt, modelId }),
       });
 
       if (!promptRes.ok) {
@@ -130,6 +137,25 @@ export default function Home() {
               className={styles.input}
               required
             />
+          </div>
+
+          <div className={styles.field}>
+            <label htmlFor="model" className={styles.label}>
+              Model
+            </label>
+            <select
+              id="model"
+              value={modelId}
+              onChange={(e) => setModelId(e.target.value)}
+              disabled={isRunning}
+              className={styles.input}
+            >
+              {MODELS.map((model) => (
+                <option key={model.id} value={model.id}>
+                  {model.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className={styles.field}>

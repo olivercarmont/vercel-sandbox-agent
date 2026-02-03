@@ -14,13 +14,19 @@ export async function createSession(baseUrl: string, title = "Session") {
 export async function sendPrompt(
   baseUrl: string,
   sessionId: string,
-  prompt: string
+  prompt: string,
+  options?: {
+    providerID?: string;
+    modelID?: string;
+  }
 ) {
   const client = createOpencodeClient({ baseUrl });
-  await client.session.prompt({
+  await client.session.promptAsync({
     sessionID: sessionId,
     parts: [{ type: "text", text: prompt }],
-  });
+    providerID: options?.providerID || "anthropic",
+    modelID: options?.modelID || "claude-opus-4-5-20251101",
+  } as Parameters<typeof client.session.promptAsync>[0]);
 }
 
 export async function* subscribeToEvents(baseUrl: string) {
